@@ -20252,129 +20252,327 @@ if (process.env.NODE_ENV === 'production') {
 },{"./cjs/react.development.js":24,"./cjs/react.production.min.js":25,"_process":18}],27:[function(require,module,exports){
 var React = require('react');
 var createClass = require('create-react-class');
-var ListItem = require('./ListItem.jsx');
+var AggregateCardHeader = require('./AggregateCardHeader.jsx');
 
-var List = createClass({
+var AggregateCard = createClass({
 	render: function () {
-		var createItem = function (text, index) {
-			return React.createElement(ListItem, { key: index + text, text: text });
+		var cardSytle = {
+			background: "#FFFFFF",
+			marginTop: 10,
+			height: 150
 		};
-
 		return React.createElement(
-			'ul',
-			null,
-			this.props.items.map(createItem)
+			'div',
+			{ style: cardSytle, className: 'panel' },
+			React.createElement(AggregateCardHeader, { color: this.props.color, title: this.props.title, value: this.props.value })
 		);
 	}
 });
 
-module.exports = List;
+module.exports = AggregateCard;
 
-},{"./ListItem.jsx":28,"create-react-class":2,"react":26}],28:[function(require,module,exports){
+},{"./AggregateCardHeader.jsx":28,"create-react-class":2,"react":26}],28:[function(require,module,exports){
 var React = require('react');
 var createClass = require('create-react-class');
 
-var ListItem = createClass({
+var AggregateCardHeader = createClass({
 	render: function () {
+		var headerStyle = {
+			color: "#FFFFFF"
+		};
+		if (this.props.color) {
+			headerStyle.background = this.props.color;
+		}
 		return React.createElement(
-			'li',
-			null,
+			'div',
+			{ style: headerStyle, className: 'panel col-sm-12' },
 			React.createElement(
-				'h4',
-				null,
-				this.props.text
+				'div',
+				{ className: 'panel-body' },
+				React.createElement(
+					'div',
+					{ style: { fontSize: 15 }, className: 'row' },
+					this.props.title
+				),
+				React.createElement(
+					'div',
+					{ style: { fontSize: 20 }, className: 'row' },
+					React.createElement(
+						'b',
+						null,
+						this.props.value
+					)
+				)
 			)
 		);
 	}
 });
 
-module.exports = ListItem;
+module.exports = AggregateCardHeader;
 
 },{"create-react-class":2,"react":26}],29:[function(require,module,exports){
 var React = require('react');
 var createClass = require('create-react-class');
-var List = require('./List.jsx');
+var AggregateCard = require('./AggregateCard.jsx');
+var WeatherCard = require('./WeatherCard.jsx');
 
-var ListManager = createClass({
-
-	getInitialState: function () {
-		return { items: [], newItemText: '' };
-	},
-
-	onChange: function (e) {
-		this.setState({ newItemText: e.target.value });
-	},
-
-	handleSubmit: function (e) {
-		e.preventDefault();
-		var currentItems = this.state.items;
-		currentItems.push(this.state.newItemText);
-		this.setState({ items: currentItems, newItemText: '' });
-	},
-
+var AggregateManager = createClass({
 	render: function () {
 		var divStyle = {
-			marginTop: 10
+			marginTop: 20,
+			background: "#F5F7FA"
 		};
-		var headingStyle = {};
-
-		if (this.props.headingColor) {
-			headingStyle.background = this.props.headingColor;
-		}
-
 		return React.createElement(
 			'div',
-			{ style: divStyle, className: 'col-sm-4' },
+			{ style: divStyle, className: 'panel-group' },
 			React.createElement(
 				'div',
-				{ className: 'panel panel-primary' },
-				React.createElement(
-					'div',
-					{ style: headingStyle, className: 'panel-heading' },
-					React.createElement(
-						'h3',
-						null,
-						this.props.title
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'row panel-body' },
-					React.createElement(
-						'form',
-						{ onSubmit: this.handleSubmit },
-						React.createElement(
-							'div',
-							{ className: 'col-sm-9' },
-							React.createElement('input', { className: 'form-control', onChange: this.onChange, value: this.state.newItemText })
-						),
-						React.createElement(
-							'div',
-							{ className: 'col-sm-2' },
-							React.createElement(
-								'button',
-								{ className: 'btn btn-primary' },
-								'Add'
-							)
-						)
-					)
-				),
-				React.createElement(List, { items: this.state.items })
+				{ className: 'row' },
+				React.createElement(WeatherCard, { city: 'Paris', temp: '18' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(AggregateCard, { color: '#0095D3', title: 'New Visitors', value: '1.5K' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(AggregateCard, { color: '#BC7DD7', title: 'Bounce Rate', value: '50%' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(AggregateCard, { color: '#FF0000', title: 'Searches', value: '28%' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(AggregateCard, { color: '#27CD53', title: 'Traffic', value: '140.5 kb' })
 			)
 		);
 	}
-
 });
 
-module.exports = ListManager;
+module.exports = AggregateManager;
 
-},{"./List.jsx":27,"create-react-class":2,"react":26}],30:[function(require,module,exports){
+},{"./AggregateCard.jsx":27,"./WeatherCard.jsx":30,"create-react-class":2,"react":26}],30:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+
+var WeatherCard = createClass({
+	render: function () {
+		var style = {
+			background: "#FF7F00",
+			border: "1px solid #CACBCB",
+			height: 200,
+			color: "#FFFFFF",
+			textAlign: "center"
+		};
+		return React.createElement(
+			'div',
+			{ style: style, className: 'panel col-sm-12' },
+			React.createElement(
+				'div',
+				{ className: 'panel-body' },
+				React.createElement(
+					'div',
+					{ style: { fontSize: 40 }, className: 'row' },
+					this.props.temp,
+					'\xB0'
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					this.props.city
+				)
+			)
+		);
+	}
+});
+
+module.exports = WeatherCard;
+
+},{"create-react-class":2,"react":26}],31:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+
+var MetricsCard = createClass({
+	render: function () {
+		var divStyle = {
+			marginLeft: 20,
+			border: "1px solid #CACBCB",
+			height: 150
+		};
+		var valueStyle = {
+			fontSize: 26,
+			color: "#6E6E6E",
+			paddingTop: 25,
+			paddingLeft: 10
+		};
+		var descriptionStyle = {
+			fontSize: 14,
+			color: "#CACBCB",
+			paddingLeft: 10
+		};
+		return React.createElement(
+			'div',
+			{ style: divStyle, className: 'panel col-sm-3' },
+			React.createElement(
+				'div',
+				{ className: 'panel-body' },
+				React.createElement(
+					'div',
+					{ style: valueStyle, className: 'row' },
+					React.createElement(
+						'b',
+						null,
+						this.props.metricValue
+					)
+				),
+				React.createElement(
+					'div',
+					{ style: descriptionStyle, className: 'row' },
+					this.props.metricDescription
+				)
+			)
+		);
+	}
+});
+
+module.exports = MetricsCard;
+
+},{"create-react-class":2,"react":26}],32:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+var MetricsCard = require('./MetricsCard.jsx');
+var MetricsPanel = require('./MetricsPanel.jsx');
+
+var MetricsManager = createClass({
+	render: function () {
+		var divStyle = {
+			marginTop: 20,
+			background: "#F5F7FA"
+		};
+		return React.createElement(
+			'div',
+			{ style: divStyle, className: 'panel' },
+			React.createElement(
+				'div',
+				{ className: 'panel-body' },
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(MetricsCard, { metricValue: '20', metricDescription: 'New followers added this month' }),
+					React.createElement(MetricsCard, { metricValue: '$ 1250', metricDescription: 'Average monthly income' }),
+					React.createElement(MetricsCard, { metricValue: '$ 13865', metricDescription: 'Yearly income goal' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(MetricsPanel, { bgColor: '#0095D3' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(MetricsPanel, { bgColor: '#DE33A3' })
+				)
+			)
+		);
+	}
+});
+
+module.exports = MetricsManager;
+
+},{"./MetricsCard.jsx":31,"./MetricsPanel.jsx":33,"create-react-class":2,"react":26}],33:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+var PanelFooter = require('./PanelFooter.jsx');
+
+var MetricsPanel = createClass({
+	render: function () {
+		var panelStyle = {
+			height: 250,
+			marginTop: 15,
+			padding: "0 0 0 0"
+		};
+		if (this.props.bgColor) {
+			panelStyle.background = this.props.bgColor;
+		}
+		return React.createElement(
+			'div',
+			{ style: panelStyle, className: 'col-sm-12' },
+			React.createElement(PanelFooter, null),
+			React.createElement(PanelFooter, null)
+		);
+	}
+});
+
+module.exports = MetricsPanel;
+
+},{"./PanelFooter.jsx":34,"create-react-class":2,"react":26}],34:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+var PanelFooterMetric = require('./PanelFooterMetric.jsx');
+
+var PanelFooter = createClass({
+	render: function () {
+		var footerStyle = {
+			background: "#474D4D",
+			height: 70,
+			width: "100%",
+			position: "absolute",
+			bottom: 0
+		};
+		return React.createElement(
+			'div',
+			{ style: footerStyle },
+			React.createElement(PanelFooterMetric, { metric: 'Shot Views', value: '15080' }),
+			React.createElement(PanelFooterMetric, { metric: 'Likes', value: '12000' }),
+			React.createElement(PanelFooterMetric, { metric: 'Comments', value: '5100' })
+		);
+	}
+});
+
+module.exports = PanelFooter;
+
+},{"./PanelFooterMetric.jsx":35,"create-react-class":2,"react":26}],35:[function(require,module,exports){
+var React = require('react');
+var createClass = require('create-react-class');
+
+var PanelFooterMetric = createClass({
+	render: function () {
+		var footerMetricStyle = {
+			paddingTop: 10,
+			color: "#FAFAFA",
+			textAlign: "center"
+		};
+		return React.createElement(
+			'div',
+			{ style: footerMetricStyle, className: 'col-sm-4' },
+			React.createElement(
+				'div',
+				{ style: { fontSize: 20 }, className: 'row' },
+				this.props.value
+			),
+			React.createElement(
+				'div',
+				{ style: { color: "#9C9E9E", fontSize: 12 }, className: 'row' },
+				this.props.metric
+			)
+		);
+	}
+});
+
+module.exports = PanelFooterMetric;
+
+},{"create-react-class":2,"react":26}],36:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
-var ListManager = require('./components/ListManager.jsx');
+var MetricsManager = require('./components/analytics/MetricsManager.jsx');
+var AggregateManager = require('./components/aggregate/AggregateManager.jsx');
 
-ReactDOM.render(React.createElement(ListManager, { title: 'Ingredients' }), document.getElementById('ingredients'));
-ReactDOM.render(React.createElement(ListManager, { title: 'Todo' }), document.getElementById('todo'));
-ReactDOM.render(React.createElement(ListManager, { title: 'Christmas', headingColor: '#b31217' }), document.getElementById('christmas'));
+ReactDOM.render(React.createElement(MetricsManager, null), document.getElementById('analytics'));
+ReactDOM.render(React.createElement(AggregateManager, null), document.getElementById('aggregate'));
 
-},{"./components/ListManager.jsx":29,"react":26,"react-dom":23}]},{},[30]);
+},{"./components/aggregate/AggregateManager.jsx":29,"./components/analytics/MetricsManager.jsx":32,"react":26,"react-dom":23}]},{},[36]);
